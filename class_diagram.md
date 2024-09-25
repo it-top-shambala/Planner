@@ -1,5 +1,3 @@
-
-`AccountingForOrders`
 ## Учет клиентов
 
 ```mermaid
@@ -16,63 +14,46 @@ classDiagram
     class ClientYL {
         + string name
     }
+```
+## Учет этапов производства
 
-    class AOrder {
-        <<Abstract>>
-
-       + sring number
-       + string data
-       + string comments
-    }
-    AOrder <|-- OrderItem
-    OrderItem *-- ProductQuantity
-    OrderItem *-- ClientYL
-    class OrderItem {
-       + string plann_date_of_execution
-       + string fact_date of execution
-       + vector<ProductQuantity> products
-
+```mermaid
+classDiagram
+    class Stage {
+        + string name_of_stage
+        + Equipment* equipment
+        + map<Material*, int> materials
+        + string execution_time
     }
 
-    Product *-- ProductQuantity
+    ProductionPlan *-- Stage
+    class ProductionPlan {
+        + list<Stage*> stages
+    }
+```
+## Учет заказов
+
+```mermaid
+classDiagram
+    Order *-- Product
+    class Order {
+        + sring number
+        + string start_data
+        + string plann_end_date
+        + string fact_end_date
+        + map<Product*, int> products
+        + string comments
+    }
+
     class Product {
        + string code
        + string names
-       + doubl cost
- } 
+       + double cost
+       * Material* material
+    } 
 
-    class ProductQuantity {
-    + Product* product
-    + int quantity
-}
-
-```
-`ProductionOfProducts`
-```mermaid
-classDiagram
-    class AStage {
-        <<Abstract>>
-
-        + string name
-        + string time
-    }
-
-    AStage <|-- StageItem
-    class StageItem {
-        + string equipment
-        + vector<pair<string, int>> materials
-    }
-
-    ProductionPlan *-- StageItem
-    class ProductionPlan {
-        + map<string, StageItem*> stages
-    }
-
-## Учет материалов
-
-```mermaid
-classDiagram
-    class MaterialAccounting {
+    Product *-- Material
+    class Material {
         + string name
         + int quantity
     }
@@ -82,22 +63,48 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class EquipmentAccounting {
-        + int accession_number
-        + string specialist
-        + string name
-        + string status
-        + string workshop
+    class StatusEquipment {
+        <<Enumeration>>
+        IDLE
+        AT_WORK
+        UNDER_REPAIR
+        ON_THE_WAY
     }
 
+    Equipment *-- StatusEquipment
+    Equipment *-- Workshop
+    class Equipment {
+        + int accession_number
+        + string name
+        + StatusEquipment status
+        + Workshop* workshop
+        + Employee* employee
+    }
+
+    class Workshop {
+        + string name
+    }
 ```
 ## Учет сотрудников
 
 ```mermaid
 classDiagram
-    class EmployeeAccounting{
-        + string full_name
+    class StatusEmployee {
+        <<Enumeration>>
+        AT_WORK
+        VACATION
+        ON_HOSPITAL
+        ON_BUISNESS_TRIP
+        DAY_OFF
+    }
+
+    Employee *-- StatusEmployee
+    class Employee{
+        + string last_name
+        + string first_name
+        + string patronymic_name
         + string speciality
-        + string status
+        + StatusEmployee status
         + string employee_number
     }
+```
