@@ -1,5 +1,7 @@
 
 `AccountingForOrders`
+## Учет клиентов
+
 ```mermaid
 classDiagram
     class AClient {
@@ -64,4 +66,38 @@ classDiagram
     ProductionPlan *-- StageItem
     class ProductionPlan {
         + map<string, StageItem*> stages
+    }
+
+## Учет материалов
+
+```mermaid
+classDiagram
+    class MaterialAccounting {
+        + string name
+        + int quantity
+    }
+```
+
+## Учет оборудования
+
+```mermaid
+classDiagram
+    class EquipmentAccounting {
+        + int accession_number
+        + string specialist
+        + string name
+        + string status
+        + string workshop
+    }
+
+```
+## Учет сотрудников
+
+```mermaid
+classDiagram
+    class EmployeeAccounting{
+        + string full_name
+        + string speciality
+        + string status
+        + string employee_number
     }
